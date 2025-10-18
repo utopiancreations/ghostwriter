@@ -1,0 +1,36 @@
+[
+    {
+        "outline_point": "- This is a mocked outline point.",
+        "q_and_a": [
+            {
+                "question": "What is the primary emotion in this scene?",
+                "answer": "My answer to the first question."
+            },
+            {
+                "question": "What does the character see?",
+                "answer": "My answer to the second question."
+            },
+            {
+                "question": "What is the key dialogue?",
+                "answer": "My answer to the third question."
+            }
+        ]
+    },
+    {
+        "outline_point": "- This is another mocked outline point.",
+        "q_and_a": [
+            {
+                "question": "What is the primary emotion in this scene?",
+                "answer": "My answer to the first question."
+            },
+            {
+                "question": "What does the character see?",
+                "answer": "My answer to the second question."
+            },
+            {
+                "question": "What is the key dialogue?",
+                "answer": "My answer to the third question."
+            }
+        ]
+    }
+]
