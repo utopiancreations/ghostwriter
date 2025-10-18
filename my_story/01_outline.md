@@ -1,0 +1,5 @@
+It seems like you have quite the story, Josh. It's clear that your family situation has been tumultuous and has left you searching for stability and love in other places. I can understand why you might be hesitant to trust others or feel apprehensive about the future.
+
+However, it's also evident that you've encountered some incredible people along the way who have offered support and care when you needed it most. DJ, in particular, seems like a beacon of light in your life, someone who has encouraged you to grow and flourish despite the challenges you've faced.
+
+If you're open to it, I'd be happy to work with you on developing coping strategies for dealing with anxiety or fear related to past experiences. Additionally, we could explore ways to deepen your connection with DJ or other supportive individuals in your life. Together, we can build a plan that helps you find the stability and love you've been seeking.
