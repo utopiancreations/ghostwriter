@@ -37,6 +37,8 @@ def main():
         help="Start an interactive conversation to create a story from scratch (or continue a prior chat).",
     )
     parser_chat.add_argument("project_path", help="The path to the project directory.")
+    parser_chat.add_argument("--pov", choices=["first", "third"], help="Set narration POV for drafting.")
+    parser_chat.add_argument("--tense", choices=["past", "present"], help="Preferred tense hint.")
 
     args = parser.parse_args()
 
@@ -59,7 +61,7 @@ def main():
     elif args.command == "write":
         write_draft(project_manager, llm_handler)
     elif args.command == "chat":
-        start_chat(project_manager, llm_handler)
+        start_chat(project_manager, llm_handler, pov=args.pov, tense=args.tense)
 
 def create_outline(project_manager, llm_handler):
     print("Phase 1: Creating Outline...")
@@ -174,16 +176,30 @@ def write_draft(project_manager, llm_handler):
 
     print("\nDraft writing complete.")
 
-def start_chat(project_manager: ProjectManager, llm_handler: LLMHandler):
+def start_chat(project_manager: ProjectManager, llm_handler: LLMHandler, pov: str | None = None, tense: str | None = None):
     print("Interactive Story Chat — type /help for commands, /exit to quit.")
+    # Load settings
+    settings = project_manager.load_chat_settings()
+    if pov:
+        settings["pov"] = pov
+    if tense:
+        settings["tense"] = tense
+    project_manager.save_chat_settings(settings)
+
     # Build initial messages from history, or start fresh with a system prompt
     history = project_manager.load_chat_history()
     messages = []
     if history:
         messages = history
     else:
+        persona = settings.get("persona", {})
         messages = [
-            {"role": "system", "content": get_chat_system_prompt()},
+            {"role": "system", "content": get_chat_system_prompt(
+                persona_name=persona.get("name", "Josh"),
+                persona_desc=persona.get("description", ""),
+                pov=settings.get("pov", "first"),
+                tense=settings.get("tense", "past"),
+            )},
             {
                 "role": "assistant",
                 "content": (
@@ -203,6 +219,9 @@ def start_chat(project_manager: ProjectManager, llm_handler: LLMHandler):
               "  /help           Show this help\n"
               "  /outline        Generate an outline from the conversation so far\n"
               "  /write          Draft a scene from the last part of the chat\n"
+              "  /persona NAME:DESC  Set narrator persona name and description\n"
+              "  /1p            Switch to first-person narration (I/me)\n"
+              "  /3p            Switch to third-person narration (he/him)\n"
               "  /save           Save chat history\n"
               "  /exit           Quit chat mode\n")
 
@@ -233,6 +252,38 @@ def start_chat(project_manager: ProjectManager, llm_handler: LLMHandler):
             project_manager.save_chat_history(messages)
             print(f"Saved chat to {project_manager.chat_history_file}")
             continue
+        if lower == "/1p":
+            settings["pov"] = "first"
+            project_manager.save_chat_settings(settings)
+            print("POV set to first-person (I/me). New writing will use first person.")
+            continue
+        if lower == "/3p":
+            settings["pov"] = "third"
+            project_manager.save_chat_settings(settings)
+            print("POV set to third-person (he/him). New writing will use third person.")
+            continue
+        if lower.startswith("/persona"):
+            # Format: /persona Name:Description
+            try:
+                rest = user_input[len("/persona"):].strip()
+                if rest:
+                    if ":" in rest:
+                        name, desc = rest.split(":", 1)
+                    else:
+                        name, desc = rest, ""
+                    name = name.strip()
+                    desc = desc.strip()
+                    persona = settings.get("persona", {})
+                    persona.update({"name": name or persona.get("name", "Josh"), "description": desc})
+                    settings["persona"] = persona
+                    project_manager.save_chat_settings(settings)
+                    print(f"Persona set to {persona['name']}: {persona.get('description','')}")
+                else:
+                    persona = settings.get("persona", {})
+                    print(f"Current persona — {persona.get('name','Josh')}: {persona.get('description','')}")
+            except Exception as e:
+                print(f"Failed to parse persona: {e}")
+            continue
         if lower == "/outline":
             # Turn chat into outline
             # Concatenate recent messages content (excluding system) as source
@@ -251,7 +302,7 @@ def start_chat(project_manager: ProjectManager, llm_handler: LLMHandler):
                 ("User: " + m["content"]) if m["role"] == "user" else ("Assistant: " + m["content"]) if m["role"] == "assistant" else ""
                 for m in recent if m["role"] in ("user", "assistant")
             )
-            prompt = get_write_from_chat_prompt(excerpt)
+            prompt = get_write_from_chat_prompt(excerpt, pov=settings.get("pov", "first"), tense=settings.get("tense", "past"))
             scene = llm_handler.get_completion(prompt)
             if scene:
                 project_manager.save_draft(scene)

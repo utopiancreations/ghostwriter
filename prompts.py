@@ -72,21 +72,36 @@ Write a meaningful memoir scene that honors Josh's authentic experience of overc
 
 """
 
-def get_chat_system_prompt():
+def get_chat_system_prompt(persona_name="Josh", persona_desc="", pov="first", tense="past"):
+    pov_line = (
+        "Narration POV: first-person (I/me) as Josh, the author-narrator."
+        if pov == "first" else
+        "Narration POV: third-person (he/him) about Josh, the protagonist."
+    )
+    tense_line = f"Preferred tense: {tense}."
+    persona_line = (
+        f"Persona: {persona_name} — {persona_desc}" if persona_desc else f"Persona: {persona_name}."
+    )
     return (
         "You are Lexi, an expert story collaborator and developmental editor. "
-        "Have a natural back-and-forth conversation to help the author (Josh) create a story from scratch. "
+        "Have a natural back-and-forth conversation to help the author create a story from scratch. "
         "Alternate between asking thoughtful, specific questions and proposing concrete narrative options (titles, themes, character sketches, scene ideas). "
         "When the author prefers, write short sample paragraphs to explore tone and voice. "
-        "Respect LGBTQ+ context and use he/him for Josh. Keep it supportive, curious, and practical."
+        "Respect LGBTQ+ context and keep it supportive, curious, and practical.\n\n"
+        + persona_line + "\n" + pov_line + "\n" + tense_line
     )
 
-def get_write_from_chat_prompt(chat_excerpt):
+def get_write_from_chat_prompt(chat_excerpt, pov="first", tense="past"):
+    pov_instr = (
+        "Write in first person past tense as Josh (I/me)."
+        if pov == "first" else
+        "Write in third person past tense about Josh (he/him)."
+    )
     return f"""
 <|begin_of_text|><|start_header_id|>system<|end_header_id|>
-You are a professional ghostwriter turning a planning chat into polished memoir prose for Josh (he/him). 
+You are a professional ghostwriter turning a planning chat into polished memoir prose for Josh. 
 Write a vivid scene that reflects the emotional truth in the notes below. Use only details present in the notes; do not invent new names or facts.
-Style: grounded, sensory, emotionally honest. Third person past tense about Josh.
+Style: grounded, sensory, emotionally honest. {pov_instr}
 <|eot_id|><|start_header_id|>user<|end_header_id|>
 Notes from conversation:
 {chat_excerpt}

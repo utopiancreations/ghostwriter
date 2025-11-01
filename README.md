@@ -80,11 +80,14 @@ python ghostwriter.py chat my_story
 
 While chatting, use commands:
 
-- `/help`   — list commands
-- `/outline` — generate an outline from the conversation so far (saves to `01_outline.md`)
-- `/write`  — draft a scene based on the recent chat (appends to `03_draft.md`)
-- `/save`   — save chat history to `00_chat.json`
-- `/exit`   — quit and save
+- `/help`      — list commands
+- `/outline`   — generate an outline from the conversation so far (saves to `01_outline.md`)
+- `/write`     — draft a scene based on the recent chat (appends to `03_draft.md`)
+- `/persona`   — set narrator persona, e.g. `/persona Josh:Gay memoir narrator`
+- `/1p`        — switch to first-person narration (I/me)
+- `/3p`        — switch to third-person narration (he/him)
+- `/save`      — save chat history to `00_chat.json`
+- `/exit`      — quit and save
 
 ### Advanced Options
 

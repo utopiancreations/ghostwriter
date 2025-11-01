@@ -7,6 +7,8 @@ class ProjectManager:
         self.raw_text_file = os.path.join(project_path, "00_raw_text.txt")
         # Conversational mode chat history (JSON array of messages)
         self.chat_history_file = os.path.join(project_path, "00_chat.json")
+        # Conversational settings (persona, pov, tone)
+        self.chat_settings_file = os.path.join(project_path, "00_chat_settings.json")
         self.outline_file = os.path.join(project_path, "01_outline.md")
         self.interview_data_file = os.path.join(project_path, "02_interview_data.json")
         self.draft_file = os.path.join(project_path, "03_draft.md")
@@ -78,3 +80,34 @@ class ProjectManager:
         else:
             raise ValueError("new_messages must be dict or list")
         self.save_chat_history(history)
+
+    # --- Chat settings helpers ---
+    def load_chat_settings(self):
+        """Load chat settings dict. Defaults: pov=first, persona=None."""
+        defaults = {
+            "pov": "first",  # 'first' or 'third'
+            "tense": "past",  # textual hint, not strictly enforced
+            "persona": {
+                "name": "Josh",
+                "description": "Author and narrator; a gay man writing an authentic memoir about family rejection and finding love."
+            }
+        }
+        if not os.path.exists(self.chat_settings_file):
+            return defaults
+        try:
+            with open(self.chat_settings_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                if isinstance(data, dict):
+                    # merge shallow defaults
+                    merged = {**defaults, **data}
+                    if "persona" in data and isinstance(data["persona"], dict):
+                        merged["persona"] = {**defaults["persona"], **data["persona"]}
+                    return merged
+        except Exception:
+            pass
+        return defaults
+
+    def save_chat_settings(self, settings: dict):
+        self._ensure_dir_exists()
+        with open(self.chat_settings_file, 'w', encoding='utf-8') as f:
+            json.dump(settings, f, ensure_ascii=False, indent=2)
