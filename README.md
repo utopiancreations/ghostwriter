@@ -7,6 +7,7 @@ A multi-phase ghostwriting tool that uses Dolphin Llama3:8b (uncensored) to help
 - **Phase 1: Outline Generation** - Converts raw text into structured story outlines
 - **Phase 2: Interactive Interview** - Conducts guided interviews to flesh out story details
 - **Phase 3: Draft Writing** - Generates narrative scenes from outline and interview data
+- **New: Conversational Mode (/chat)** - Start from nothing and co-create your story in a natural back-and-forth chat
 - **Uncensored Model** - Uses Dolphin Llama3:8b for authentic creative writing without content restrictions
 - **Resume Capability** - Can resume work from any phase
 - **Local Processing** - All AI processing happens locally via Ollama
@@ -68,6 +69,22 @@ A multi-phase ghostwriting tool that uses Dolphin Llama3:8b (uncensored) to help
    ```bash
    python ghostwriter.py write my_story
    ```
+
+### Conversational Mode (no starting text needed)
+
+Start an interactive chat to develop your story from scratch. The tool will ask questions, propose options, and can write sample scenes upon request.
+
+```bash
+python ghostwriter.py chat my_story
+```
+
+While chatting, use commands:
+
+- `/help`   — list commands
+- `/outline` — generate an outline from the conversation so far (saves to `01_outline.md`)
+- `/write`  — draft a scene based on the recent chat (appends to `03_draft.md`)
+- `/save`   — save chat history to `00_chat.json`
+- `/exit`   — quit and save
 
 ### Advanced Options
 
@@ -154,6 +171,7 @@ Modify `llm_handler.py` to adjust:
 - Top-p (randomness)
 - Context window size
 - Repeat penalty
+ - Switch between /generate and /chat endpoints (already supported)
 
 ## Contributing
 

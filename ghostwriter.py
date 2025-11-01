@@ -4,7 +4,13 @@ import json
 import sys
 from llm_handler import LLMHandler
 from project_manager import ProjectManager
-from prompts import get_outline_prompt, get_interview_prompt, get_write_prompt
+from prompts import (
+    get_outline_prompt,
+    get_interview_prompt,
+    get_write_prompt,
+    get_chat_system_prompt,
+    get_write_from_chat_prompt,
+)
 
 def main():
     parser = argparse.ArgumentParser(description="A multi-phase ghostwriting tool using local LLMs.")
@@ -24,6 +30,13 @@ def main():
     # Write command
     parser_write = subparsers.add_parser("write", help="Write the draft from the outline and interview data.")
     parser_write.add_argument("project_path", help="The path to the project directory.")
+
+    # Chat command
+    parser_chat = subparsers.add_parser(
+        "chat",
+        help="Start an interactive conversation to create a story from scratch (or continue a prior chat).",
+    )
+    parser_chat.add_argument("project_path", help="The path to the project directory.")
 
     args = parser.parse_args()
 
@@ -45,6 +58,8 @@ def main():
         conduct_interview(project_manager, llm_handler)
     elif args.command == "write":
         write_draft(project_manager, llm_handler)
+    elif args.command == "chat":
+        start_chat(project_manager, llm_handler)
 
 def create_outline(project_manager, llm_handler):
     print("Phase 1: Creating Outline...")
@@ -158,6 +173,104 @@ def write_draft(project_manager, llm_handler):
             print(f"Failed to generate scene for: {outline_point}")
 
     print("\nDraft writing complete.")
+
+def start_chat(project_manager: ProjectManager, llm_handler: LLMHandler):
+    print("Interactive Story Chat — type /help for commands, /exit to quit.")
+    # Build initial messages from history, or start fresh with a system prompt
+    history = project_manager.load_chat_history()
+    messages = []
+    if history:
+        messages = history
+    else:
+        messages = [
+            {"role": "system", "content": get_chat_system_prompt()},
+            {
+                "role": "assistant",
+                "content": (
+                    "Hi Josh — want to start with a vibe check? We can explore themes, settings, and a couple of"
+                    " character seeds, or jump straight into writing a sample opening. What are you in the mood for?"
+                ),
+            },
+        ]
+        project_manager.save_chat_history(messages)
+
+    # Print last assistant message if present
+    if messages and messages[-1]["role"] == "assistant":
+        print(messages[-1]["content"])
+
+    def show_help():
+        print("Commands:\n"
+              "  /help           Show this help\n"
+              "  /outline        Generate an outline from the conversation so far\n"
+              "  /write          Draft a scene from the last part of the chat\n"
+              "  /save           Save chat history\n"
+              "  /exit           Quit chat mode\n")
+
+    show_tip_once = True
+    while True:
+        try:
+            user_input = input("> ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print("\nExiting chat.")
+            break
+
+        if not user_input:
+            if show_tip_once:
+                print("Tip: describe a feeling, a moment, or a character — I’ll ask sharp questions and riff ideas.")
+                show_tip_once = False
+            continue
+
+        # Commands
+        lower = user_input.lower()
+        if lower == "/help":
+            show_help()
+            continue
+        if lower == "/exit":
+            print("Saving and exiting chat.")
+            project_manager.save_chat_history(messages)
+            break
+        if lower == "/save":
+            project_manager.save_chat_history(messages)
+            print(f"Saved chat to {project_manager.chat_history_file}")
+            continue
+        if lower == "/outline":
+            # Turn chat into outline
+            # Concatenate recent messages content (excluding system) as source
+            text = "\n\n".join(m["content"] for m in messages if m["role"] != "system")
+            outline = llm_handler.get_completion(get_outline_prompt(text))
+            if outline:
+                project_manager.save_outline(outline)
+                print(f"Outline saved to {project_manager.outline_file}")
+            else:
+                print("Failed to generate outline.")
+            continue
+        if lower == "/write":
+            # Use the last ~6 messages as context to write a scene
+            recent = messages[-12:] if len(messages) > 12 else messages[:]
+            excerpt = "\n\n".join(
+                ("User: " + m["content"]) if m["role"] == "user" else ("Assistant: " + m["content"]) if m["role"] == "assistant" else ""
+                for m in recent if m["role"] in ("user", "assistant")
+            )
+            prompt = get_write_from_chat_prompt(excerpt)
+            scene = llm_handler.get_completion(prompt)
+            if scene:
+                project_manager.save_draft(scene)
+                print(f"Draft appended to {project_manager.draft_file}")
+            else:
+                print("Failed to write from chat context.")
+            continue
+
+        # Regular conversational turn
+        messages.append({"role": "user", "content": user_input})
+        project_manager.append_chat_messages({"role": "user", "content": user_input})
+
+        reply = llm_handler.chat(messages)
+        if reply:
+            messages.append({"role": "assistant", "content": reply})
+            project_manager.append_chat_messages({"role": "assistant", "content": reply})
+            print(reply)
+        else:
+            print("(No reply — try again or /save)")
 
 if __name__ == "__main__":
     main()
