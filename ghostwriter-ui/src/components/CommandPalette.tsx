@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { useProjects } from '@/context/ProjectContext'
 import { Command } from 'cmdk'
 import { Command as CommandIcon, Plus, Home, PanelLeft } from 'lucide-react'
@@ -34,6 +34,8 @@ export function CommandPalette({ open, onOpenChange, onNewProject }: CommandPale
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="p-0 overflow-hidden border border-border/60 bg-background/80 backdrop-blur-md w-[90vw] max-w-xl animate-in fade-in-0 zoom-in-95">
+        <DialogTitle className="sr-only">Command Palette</DialogTitle>
+        <DialogDescription className="sr-only">Search projects or run commands.</DialogDescription>
         <Command label="Command Menu" loop>
           <div className="flex items-center gap-2 border-b border-border/60 px-3 py-2">
             <CommandIcon size={14} className="text-foreground/60" />

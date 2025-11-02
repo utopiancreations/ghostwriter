@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from './ui/dialog'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { useProjects } from '@/context/ProjectContext'
@@ -29,6 +29,9 @@ export function NewProjectModal({ open, onOpenChange }: { open: boolean; onOpenC
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create new project</DialogTitle>
+          <DialogDescription>
+            This will create a new chat session and project folder.
+          </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           <Input 

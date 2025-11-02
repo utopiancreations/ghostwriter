@@ -14,8 +14,10 @@ export function DraftTab({ projectId, scrollTarget }: { projectId: string; scrol
     setError(false)
     fetch(`/mock-data/${projectId}/03_draft.md`)
       .then((r) => {
-        if (!r.ok) {
-          throw new Error('File not found')
+        // Check if response is valid and not HTML fallback
+        const contentType = r.headers.get('content-type')
+        if (!r.ok || (contentType && contentType.includes('text/html'))) {
+          throw new Error('File not found or is HTML fallback')
         }
         return r.text()
       })

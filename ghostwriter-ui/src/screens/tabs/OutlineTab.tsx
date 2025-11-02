@@ -13,8 +13,10 @@ export function OutlineTab({ projectId, onHeadingClick }: { projectId: string; o
     setError(false)
     fetch(`/mock-data/${projectId}/01_outline.md`)
       .then((r) => {
-        if (!r.ok) {
-          throw new Error('File not found')
+        // Check if response is valid and not HTML fallback
+        const contentType = r.headers.get('content-type')
+        if (!r.ok || (contentType && contentType.includes('text/html'))) {
+          throw new Error('File not found or is HTML fallback')
         }
         return r.text()
       })
