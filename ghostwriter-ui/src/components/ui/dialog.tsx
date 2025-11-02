@@ -23,13 +23,13 @@ export function DialogContent({ className, children, ...props }: React.Component
       <DialogOverlay />
       <DialogPrimitive.Content
         className={cn(
-          'fixed z-50 left-1/2 top-1/2 w-[90vw] max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-lg border border-zinc-800 bg-zinc-950 p-4 shadow-lg focus:outline-none',
+          'fixed z-50 left-1/2 top-1/2 w-[90vw] max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-zinc-800/50 bg-zinc-950 p-6 shadow-2xl focus:outline-none',
           className
         )}
         {...props}
       >
         {children}
-        <DialogPrimitive.Close className="absolute right-3 top-3 text-zinc-400 hover:text-zinc-200">
+        <DialogPrimitive.Close className="absolute right-4 top-4 text-zinc-400 hover:text-zinc-200 rounded-lg hover:bg-zinc-800/50 p-1 transition-colors">
           <X size={18} />
         </DialogPrimitive.Close>
       </DialogPrimitive.Content>
@@ -38,7 +38,7 @@ export function DialogContent({ className, children, ...props }: React.Component
 }
 
 export function DialogHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('mb-2', className)} {...props} />
+  return <div className={cn('mb-4', className)} {...props} />
 }
 
 export function DialogTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
