@@ -1,0 +1,5 @@
+[
+  { "role": "assistant", "content": "Hi! What would you like to explore today?" },
+  { "role": "user", "content": "I have a new idea for a short story." },
+  { "role": "assistant", "content": "Great! Tell me about the premise." }
+]
