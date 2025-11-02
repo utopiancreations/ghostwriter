@@ -13,7 +13,7 @@ export function ProjectDashboard() {
               <CardTitle>{p.name}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-foreground/70">Type: {p.type}</p>
+              <p className="text-sm text-foreground/70">{p.hasRawText ? 'Started with uploaded text' : 'Started from scratch'}</p>
             </CardContent>
           </Card>
         ))}

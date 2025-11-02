@@ -92,7 +92,7 @@ export function CommandPalette({ open, onOpenChange, onNewProject }: CommandPale
                   className="flex cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-2 text-sm aria-selected:bg-secondary/40"
                 >
                   <span>{p.name}</span>
-                  <span className="text-[10px] uppercase text-foreground/50">{p.type}</span>
+                  <span className="text-[10px] uppercase text-foreground/50">{p.hasRawText ? 'TXT' : 'NEW'}</span>
                 </Command.Item>
               ))}
             </Command.Group>

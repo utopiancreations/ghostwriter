@@ -1,10 +1,9 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
-export type ProjectType = 'pipeline' | 'chat'
 export interface Project {
   id: string
   name: string
-  type: ProjectType
+  hasRawText: boolean // true if started with uploaded text
 }
 
 interface ProjectContextValue {
@@ -69,7 +68,7 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
 
   const addProject: ProjectContextValue['addProject'] = (p) => {
     const id = p.id ?? slugify(p.name || 'project')
-    const project: Project = { id, name: p.name, type: p.type }
+    const project: Project = { id, name: p.name, hasRawText: p.hasRawText ?? false }
     setProjects((prev) => [...prev, project])
     return project
   }

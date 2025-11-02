@@ -1,4 +1,4 @@
 [
-  { "id": "my_story", "name": "My Story", "type": "pipeline" },
-  { "id": "new_idea", "name": "New Idea", "type": "chat" }
+  { "id": "my_story", "name": "My Story", "hasRawText": true },
+  { "id": "new_idea", "name": "New Idea", "hasRawText": false }
 ]

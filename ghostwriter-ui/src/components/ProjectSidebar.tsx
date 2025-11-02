@@ -37,7 +37,7 @@ export function ProjectSidebar({ onOpenNew }: { onOpenNew: () => void }) {
               )}
             >
               <span className="truncate">{p.name}</span>
-              <span className="text-[10px] uppercase text-foreground/50">{p.type}</span>
+              <span className="text-[10px] uppercase text-foreground/50">{p.hasRawText ? 'TXT' : 'NEW'}</span>
             </button>
           ))}
         </div>

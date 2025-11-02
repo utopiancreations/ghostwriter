@@ -4,19 +4,20 @@ import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { useProjects } from '@/context/ProjectContext'
-import type { ProjectType } from '@/context/ProjectContext'
+import { MessageSquare, Upload } from 'lucide-react'
 
 export function NewProjectModal({ open, onOpenChange }: { open: boolean; onOpenChange: (val: boolean) => void }) {
   const { addProject, setActiveProject } = useProjects()
   const [name, setName] = useState('')
-  const [type, setType] = useState<ProjectType>('chat')
+  const [mode, setMode] = useState<'scratch' | 'upload'>('scratch')
 
   const create = () => {
     if (!name.trim()) return
-    const project = addProject({ name: name.trim(), type })
+    const project = addProject({ name: name.trim(), hasRawText: mode === 'upload' })
     setActiveProject(project.id)
     onOpenChange(false)
     setName('')
+    setMode('scratch')
   }
 
   return (
@@ -30,25 +31,31 @@ export function NewProjectModal({ open, onOpenChange }: { open: boolean; onOpenC
           <Input placeholder="Project name" value={name} onChange={(e) => setName(e.target.value)} />
           <div className="grid grid-cols-2 gap-2">
             <Card
-              className={`cursor-pointer ${type === 'chat' ? 'ring-2 ring-zinc-600' : ''}`}
-              onClick={() => setType('chat')}
+              className={`cursor-pointer transition-all ${mode === 'scratch' ? 'ring-2 ring-primary' : ''}`}
+              onClick={() => setMode('scratch')}
             >
               <CardHeader>
-                <CardTitle>Start from scratch</CardTitle>
+                <div className="flex items-center gap-2">
+                  <MessageSquare size={16} className="text-primary" />
+                  <CardTitle>Start from scratch</CardTitle>
+                </div>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-zinc-400">Chat workflow</p>
+                <p className="text-sm text-foreground/70">Begin with a blank chat</p>
               </CardContent>
             </Card>
             <Card
-              className={`cursor-pointer ${type === 'pipeline' ? 'ring-2 ring-zinc-600' : ''}`}
-              onClick={() => setType('pipeline')}
+              className={`cursor-pointer transition-all ${mode === 'upload' ? 'ring-2 ring-primary' : ''}`}
+              onClick={() => setMode('upload')}
             >
               <CardHeader>
-                <CardTitle>Start from existing material</CardTitle>
+                <div className="flex items-center gap-2">
+                  <Upload size={16} className="text-primary" />
+                  <CardTitle>Upload existing text</CardTitle>
+                </div>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-zinc-400">Outline / Interview / Draft</p>
+                <p className="text-sm text-foreground/70">Paste or upload a document</p>
               </CardContent>
             </Card>
           </div>
