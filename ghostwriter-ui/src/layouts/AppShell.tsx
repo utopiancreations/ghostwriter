@@ -22,7 +22,7 @@ export function AppShell() {
         <ResizableHandle />
         <ResizablePanel defaultSize={80} className="bg-background/60 supports-backdrop-filter:bg-background/40 backdrop-blur">
           <div className="h-full">
-            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border/60 bg-background/70 px-4 py-3 backdrop-blur animate-in fade-in-0 slide-in-from-top-1">
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border/60 bg-background/70 px-6 py-4 backdrop-blur animate-in fade-in-0 slide-in-from-top-1">
               <div className="flex items-center gap-2">
                 <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary/15">
                   <PenLine className="text-primary" size={16} />
@@ -47,7 +47,7 @@ export function AppShell() {
                 </button>
               </div>
             </div>
-            <div className="h-[calc(100%-49px)] p-4">
+            <div className="h-[calc(100%-57px)] p-6">
               {activeProject ? <Studio /> : <ProjectDashboard />}
             </div>
           </div>

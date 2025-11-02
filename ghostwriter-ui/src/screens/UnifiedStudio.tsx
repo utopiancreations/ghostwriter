@@ -54,13 +54,13 @@ export function UnifiedStudio({ projectId }: { projectId: string }) {
                 </button>
               </TabsList>
               <div className="flex-1 overflow-hidden">
-                <TabsContent value="chat" className="h-full m-0 p-4">
+                <TabsContent value="chat" className="h-full m-0 p-6">
                   <ChatTab projectId={projectId} />
                 </TabsContent>
-                <TabsContent value="outline" className="h-full m-0 p-4">
+                <TabsContent value="outline" className="h-full m-0 p-6">
                   <OutlineTab projectId={projectId} onHeadingClick={handleOutlineClick} />
                 </TabsContent>
-                <TabsContent value="draft" className="h-full m-0 p-4">
+                <TabsContent value="draft" className="h-full m-0 p-6">
                   <DraftTab projectId={projectId} scrollTarget={draftScrollTarget} />
                 </TabsContent>
               </div>

@@ -16,17 +16,17 @@ export function ProjectSidebar({ onOpenNew }: { onOpenNew: () => void }) {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center justify-between px-3 py-2 border-b border-border/60">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-border/60">
         <h2 className="text-sm font-semibold">Projects</h2>
         <Button className="h-7 px-2 py-1 text-xs" onClick={onOpenNew}>
           New
         </Button>
       </div>
-      <div className="p-2">
+      <div className="p-3">
         <Input placeholder="Search projects" value={query} onChange={(e) => setQuery(e.target.value)} />
       </div>
       <ScrollArea className="flex-1">
-        <div className="space-y-1 p-2">
+        <div className="space-y-1 p-3">
           {filtered.map((p) => (
             <button
               key={p.id}

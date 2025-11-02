@@ -42,7 +42,7 @@ export function ContextPanel({ projectId, activeSection }: ContextPanelProps) {
 
   if (loading) {
     return (
-      <div className="h-full flex items-center justify-center text-sm text-gray-400">
+      <div className="h-full flex items-center justify-center p-6 text-sm text-gray-400">
         Loading context...
       </div>
     );
@@ -54,7 +54,7 @@ export function ContextPanel({ projectId, activeSection }: ContextPanelProps) {
 
   if (!activeSection) {
     return (
-      <div className="h-full flex flex-col items-center justify-center text-center px-6 text-sm text-gray-400">
+      <div className="h-full flex flex-col items-center justify-center text-center p-6 text-sm text-gray-400">
         <Sparkles className="w-8 h-8 mb-3 opacity-40" />
         <p>Click on an outline heading to see</p>
         <p>relevant interview context</p>
@@ -64,7 +64,7 @@ export function ContextPanel({ projectId, activeSection }: ContextPanelProps) {
 
   if (!hasContext) {
     return (
-      <div className="h-full flex flex-col items-center justify-center text-center px-6 text-sm text-gray-400">
+      <div className="h-full flex flex-col items-center justify-center text-center p-6 text-sm text-gray-400">
         <Sparkles className="w-8 h-8 mb-3 opacity-40" />
         <p>No interview data available</p>
         <p className="text-xs mt-2">for "{activeSection}"</p>
@@ -74,7 +74,7 @@ export function ContextPanel({ projectId, activeSection }: ContextPanelProps) {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="px-4 py-3 border-b border-gray-800/50 bg-gray-900/30">
+      <div className="px-6 py-4 border-b border-gray-800/50 bg-gray-900/30">
         <div className="flex items-center gap-2 text-sm">
           <Sparkles className="w-4 h-4 text-purple-400" />
           <span className="text-gray-300 font-medium">Context</span>
