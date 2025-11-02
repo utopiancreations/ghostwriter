@@ -47,7 +47,7 @@ export function AppShell() {
                 </button>
               </div>
             </div>
-            <div className="h-[calc(100%-57px)] p-6">
+            <div className="h-[calc(100%-57px)] p-8">
               {activeProject ? <Studio /> : <ProjectDashboard />}
             </div>
           </div>

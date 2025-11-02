@@ -74,7 +74,7 @@ export function ContextPanel({ projectId, activeSection }: ContextPanelProps) {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="px-6 py-4 border-b border-gray-800/50 bg-gray-900/30">
+      <div className="px-8 py-5 border-b border-gray-800/50 bg-gray-900/30">
         <div className="flex items-center gap-2 text-sm">
           <Sparkles className="w-4 h-4 text-purple-400" />
           <span className="text-gray-300 font-medium">Context</span>
@@ -84,10 +84,10 @@ export function ContextPanel({ projectId, activeSection }: ContextPanelProps) {
       </div>
 
       <ScrollArea className="flex-1">
-        <div className="p-4 space-y-4">
+        <div className="p-6 space-y-5">
           {relevantEntries.map((entry, index) => (
-            <Card key={index} className="p-4 bg-gray-900/40 border-gray-800/50 hover:bg-gray-900/60 transition-colors">
-              <div className="space-y-3">
+            <Card key={index} className="p-5 bg-gray-900/40 border-gray-800/50 hover:bg-gray-900/60 transition-colors">
+              <div className="space-y-4">
                 <div>
                   <div className="text-xs font-medium text-purple-400 mb-1.5">Question</div>
                   <div className="text-sm text-gray-300">{entry.question}</div>

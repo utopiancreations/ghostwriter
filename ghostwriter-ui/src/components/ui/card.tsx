@@ -4,14 +4,14 @@ import { cn } from '@/lib/utils'
 export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn('rounded-2xl border border-border/40 bg-card/70 p-5 backdrop-blur supports-backdrop-filter:bg-card/60 shadow-md hover:shadow-lg transition-shadow', className)}
+      className={cn('rounded-2xl border border-border/40 bg-card/70 p-6 backdrop-blur supports-backdrop-filter:bg-card/60 shadow-md hover:shadow-lg transition-shadow', className)}
       {...props}
     />
   )
 }
 
 export function CardHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('mb-2 flex items-center justify-between', className)} {...props} />
+  return <div className={cn('mb-3 flex items-center justify-between', className)} {...props} />
 }
 
 export function CardTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {

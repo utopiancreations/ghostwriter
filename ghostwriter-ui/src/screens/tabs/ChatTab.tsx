@@ -66,9 +66,9 @@ export function ChatTab({ projectId }: { projectId: string }) {
   return (
     <div className="flex h-full flex-col">
       <ScrollArea className="flex-1 rounded-2xl border border-border/40 bg-background/60 backdrop-blur-sm">
-        <div className="mx-auto w-full max-w-3xl space-y-6 p-6">
+        <div className="mx-auto w-full max-w-3xl space-y-8 p-8">
           {messages.map((m, i) => (
-            <div key={i} className={`flex items-start gap-3 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+            <div key={i} className={`flex items-start gap-4 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               {m.role === 'assistant' && (
                 <div className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-primary/10 text-primary shadow-sm">
                   <Bot size={18} />
@@ -100,8 +100,8 @@ export function ChatTab({ projectId }: { projectId: string }) {
           <div ref={endRef} />
         </div>
       </ScrollArea>
-      <div className="mt-4">
-        <div className="mx-auto grid w-full max-w-3xl grid-cols-[auto_1fr_auto] items-end gap-3 rounded-2xl border border-border/40 bg-card/70 backdrop-blur-sm p-3 shadow-lg">
+      <div className="mt-5">
+        <div className="mx-auto grid w-full max-w-3xl grid-cols-[auto_1fr_auto] items-end gap-3 rounded-2xl border border-border/40 bg-card/70 backdrop-blur-sm p-4 shadow-lg">
           <button className="inline-flex h-10 w-10 items-center justify-center rounded-xl text-foreground/60 hover:bg-secondary/40 hover:text-foreground transition-colors">
             <Paperclip size={18} />
           </button>
